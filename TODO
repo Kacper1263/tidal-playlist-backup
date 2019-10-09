@@ -1,3 +1,3 @@
-[ ] - Show list of playlists with names and UUID
-[ ] - Get users choice (UUID)
+[x] - Show list of playlists with names and UUID
+[x] - Get users choice (UUID)
 [ ] - Save backup to txt file
