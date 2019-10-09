@@ -16,12 +16,13 @@ tidal.login(login, password).then(user =>{
         playlists.forEach(playlist => {
             console.log(` - ${playlist.title}: (${playlist.uuid})`)
         });    
-        const uuid = readline.question("Coppy UUID of your playlist (without brackets) and paste it here, or if you want to backup all type all: ")
+        const uuid = readline.question("Coppy UUID of your playlist (without brackets) and paste it here, or if you want to backup all type all: ", {defaultInput: "all"})
         if(uuid == "all") backupAllPlaylists(playlists)
         else (backupPlaylist(uuid))
     })
 }).catch(e =>{
     console.log(`Error. Bad login, password or you have problem with network. \nMore info: ${e}`)
+    readline.question("\n Press Enter to end...")
 })
 
 function backupAllPlaylists(playlists){
@@ -34,7 +35,7 @@ function backupAllPlaylists(playlists){
             console.log(`${playlist.title}: `)
             console.log(util.inspect(songsList, { maxArrayLength: null })) //Log w/o: ...more items
         })
-    });
+    })
 }
 function backupPlaylist(uuid){
     var playlist;
