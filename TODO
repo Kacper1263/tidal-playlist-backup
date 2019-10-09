@@ -1,3 +1,4 @@
 [x] - Show list of playlists with names and UUID
 [x] - Get users choice (UUID)
-[ ] - Save backup to txt file
+[ ] - Save backup to txt file with date
+[ ] - Option to backup favourites
