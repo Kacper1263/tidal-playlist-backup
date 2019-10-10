@@ -21,7 +21,7 @@ tidal.login(login, password).then(user =>{
         else (backupPlaylist(uuid))
     })
 }).catch(e =>{
-    console.log(`Error. Bad login, password or you have problem with network. \nMore info: ${e}`)
+    console.log(`\nError. Bad login, password or you have problem with network. \nMore info: ${e}`)
     readline.question("\n Press Enter to end...")
 })
 
@@ -51,6 +51,7 @@ function backupPlaylist(uuid){
             console.log(util.inspect(songsList, { maxArrayLength: null })) //Log w/o: ...more items
         })
     }).catch(e => {
-        return console.log(`Error \nMore info: ${e}`) 
+        console.log(`\nError while loading playlist \nMore info: ${e}`) 
+        return readline.question("\n Press Enter to end...")
     })
 }
