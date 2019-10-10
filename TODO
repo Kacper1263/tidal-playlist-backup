@@ -1,4 +1,5 @@
 [x] - Show list of playlists with names and UUID
 [x] - Get users choice (UUID)
+[ ] - When user sellect wrong playlist show error
 [ ] - Save backup to txt file with date
 [ ] - Option to backup favourites
