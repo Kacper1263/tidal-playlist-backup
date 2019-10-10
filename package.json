@@ -1,0 +1,29 @@
+{
+  "name": "tidal-playlist-backup",
+  "version": "1.0.0",
+  "description": "Backup songs titles from your playlists",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kacper1263/tidal-playlist-backup.git"
+  },
+  "keywords": [
+    "tidal",
+    "bakup",
+    "playlist",
+    "song"
+  ],
+  "author": "Kacper Marcinkiewicz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kacper1263/tidal-playlist-backup/issues"
+  },
+  "homepage": "https://github.com/Kacper1263/tidal-playlist-backup#readme",
+  "dependencies": {
+    "readline-sync": "^1.4.10",
+    "tidal-api-wrapper": "^1.7.0"
+  }
+}
