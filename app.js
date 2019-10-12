@@ -1,22 +1,30 @@
 const readline = require('readline-sync')
 const util = require('util')
+const fs = require('fs')
 
 const Tidal = require('tidal-api-wrapper')
 const tidal = new Tidal()
 
-var login = readline.question("Tidal login: ")
-var password = readline.question("Tidal password: ", {hideEchoBack: true})
+var loginFromCfg;
+var passwordFromCfg;
+var backupFromCfg;
+checkIsCfg()
+
+var login = loginFromCfg || readline.question("Tidal login: ")
+var password = passwordFromCfg || readline.question("Tidal password: ", {hideEchoBack: true})
 
 console.log(`\nLogging in...`)
 
 tidal.login(login, password).then(user =>{
     console.log(`Loading your playlists...`)
     tidal.getPlaylists().then(playlists =>{
-        console.log(`Here are your playlists and their UUIDs: `)
-        playlists.forEach(playlist => {
-            console.log(` - ${playlist.title}: (${playlist.uuid})`)
-        });    
-        const uuid = readline.question("Coppy UUID of your playlist (without brackets) and paste it here, or if you want to backup all type all: ", {defaultInput: "all"})
+        if(!backupFromCfg){
+            console.log(`Here are your playlists and their UUIDs: `)
+            playlists.forEach(playlist => {
+                console.log(` - ${playlist.title}: (${playlist.uuid})`)
+            }); 
+        }else console.log(`Creating backup of: ${backupFromCfg}\n`) 
+        const uuid = backupFromCfg || readline.question("Coppy UUID of your playlist (without brackets) and paste it here, or if you want to backup all type all: ", {defaultInput: "all"})
         if(uuid == "all") backupAllPlaylists(playlists)
         else (backupPlaylist(uuid))
     })
@@ -54,4 +62,18 @@ function backupPlaylist(uuid){
         console.log(`\nError while loading playlist \nMore info: ${e}`) 
         return readline.question("\n Press Enter to end...")
     })
+}
+
+function checkIsCfg(){
+    try{
+        var cfg = fs.readFileSync("./cfg.json")
+        cfg = JSON.parse(cfg)
+        loginFromCfg = cfg.login
+        passwordFromCfg = cfg.password
+        backupFromCfg = cfg.backup
+
+        if(cfg.login) console.log(`Logging in as ${cfg.login}...`)
+        if(cfg.password) console.log('Using password from cfg.json')
+    }
+    catch{}
 }
