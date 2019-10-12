@@ -108,7 +108,7 @@ function saveBackup(list){
 
         var newDate = `${day}.${month}.${year}_${hour};${minutes};${seconds}`
         list = JSON.stringify(list, null, 2)
-        var saveIn = path.join(__dirname+`/TidalBackup_${newDate}.txt`)
+        var saveIn = path.join(`./TidalBackup_${newDate}.txt`)
         fs.writeFileSync(saveIn, list, 'utf8')
         console.log(`Success! File saved with name: TidalBackup_${newDate}`)
     }catch(e){
