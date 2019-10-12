@@ -4,4 +4,5 @@
 [x] - Config file that can be used e.g. to use this script w/o input from user
 [ ] - Showing artist next to song name eg. "Wonderland - Caravan Palace"
 [ ] - Save backup to txt file with date
+[ ] - If seconds are < 10 add "0" to before seconds
 [ ] - Option to backup favourites

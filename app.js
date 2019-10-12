@@ -55,8 +55,27 @@ function backupPlaylist(uuid){
             songs.forEach(song => {
                 songsList.push(song.title)
             });
-            console.log(`${playlist.title}: `)
-            console.log(util.inspect(songsList, { maxArrayLength: null })) //Log w/o: ...more items
+            // console.log(`${playlist.title}: `)
+            // console.log(util.inspect(songsList, { maxArrayLength: null })) //Log w/o: ...more items
+
+            var title = playlist.title
+            var list = {
+                [title]: songsList
+            }
+            try{
+                var dateObj = new Date();
+                var month = dateObj.getUTCMonth() + 1; //months from 1-12
+                var day = dateObj.getUTCDate();
+                var year = dateObj.getUTCFullYear();                
+                var seconds = dateObj.getSeconds();
+                var minutes = dateObj.getMinutes();
+                var hour = dateObj.getHours();
+                var newdate = `${day}-${month}-${year}_${hour}:${minutes}:${seconds}`
+                list = JSON.stringify(list, null, 2)
+                fs.writeFileSync(`./TidalBackup-${newdate}.txt`, list)
+            }catch(e){
+                console.log(e)
+            }
         })
     }).catch(e => {
         console.log(`\nError while loading playlist \nMore info: ${e}`) 
