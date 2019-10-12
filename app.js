@@ -1,6 +1,7 @@
 const readline = require('readline-sync')
 const util = require('util')
 const fs = require('fs')
+const path = require('path')
 
 const Tidal = require('tidal-api-wrapper')
 const tidal = new Tidal()
@@ -105,10 +106,11 @@ function saveBackup(list){
         if(minutes<10) minutes = "0"+minutes
         if(seconds<10) seconds = "0"+seconds
 
-        var newDate = `${day}.${month}.${year}_${hour}:${minutes}:${seconds}`
+        var newDate = `${day}.${month}.${year}_${hour};${minutes};${seconds}`
         list = JSON.stringify(list, null, 2)
-        fs.writeFileSync(`./TidalBackup_${newDate}.txt`, list, 'utf8')
-        console.log(`Success! File saved with name: ./TidalBackup_${newDate}`)
+        var saveIn = path.join(__dirname+`/TidalBackup_${newDate}.txt`)
+        fs.writeFileSync(saveIn, list, 'utf8')
+        console.log(`Success! File saved with name: TidalBackup_${newDate}`)
     }catch(e){
         console.log(e)
         return readline.question("\n Press Enter to end...")
