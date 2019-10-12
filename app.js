@@ -111,6 +111,7 @@ function saveBackup(list){
         var saveIn = path.join(`./TidalBackup_${newDate}.txt`)
         fs.writeFileSync(saveIn, list, 'utf8')
         console.log(`Success! File saved with name: TidalBackup_${newDate}`)
+        if(!loginFromCfg || !passwordFromCfg || !backupFromCfg)return readline.question("\n Press Enter to end...")
     }catch(e){
         console.log(e)
         return readline.question("\n Press Enter to end...")
