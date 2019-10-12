@@ -33,19 +33,23 @@ tidal.login(login, password).then(user =>{
     readline.question("\n Press Enter to end...")
 })
 
-function backupAllPlaylists(playlists){
-    playlists.forEach(playlist => {
+async function backupAllPlaylists(playlists){
+    console.log("\nFetching songs from your playlists...")
+    var list = [] //List to backup
+    for await(var playlist of playlists){
         var songsList = [];
-        tidal.getPlaylistTracks(playlist.uuid).then(songs =>{
+        await tidal.getPlaylistTracks(playlist.uuid).then(songs =>{
             songs.forEach(song => {
                 songsList.push(song.title)
             });
-            console.log(`${playlist.title}: `)
-            console.log(util.inspect(songsList, { maxArrayLength: null })) //Log w/o: ...more items
+            var title = playlist.title
+            list.push({[title]: songsList})
         })
-    })
+    }
+    saveBackup(list)
 }
 function backupPlaylist(uuid){
+    console.log("\nFetching songs from your playlist...")
     var playlist;
     tidal.getPlaylist(uuid).then(_playlist =>{
         playlist = _playlist
@@ -62,20 +66,7 @@ function backupPlaylist(uuid){
             var list = {
                 [title]: songsList
             }
-            try{
-                var dateObj = new Date();
-                var month = dateObj.getUTCMonth() + 1; //months from 1-12
-                var day = dateObj.getUTCDate();
-                var year = dateObj.getUTCFullYear();                
-                var seconds = dateObj.getSeconds();
-                var minutes = dateObj.getMinutes();
-                var hour = dateObj.getHours();
-                var newdate = `${day}-${month}-${year}_${hour}:${minutes}:${seconds}`
-                list = JSON.stringify(list, null, 2)
-                fs.writeFileSync(`./TidalBackup-${newdate}.txt`, list)
-            }catch(e){
-                console.log(e)
-            }
+            saveBackup(list)
         })
     }).catch(e => {
         console.log(`\nError while loading playlist \nMore info: ${e}`) 
@@ -95,4 +86,31 @@ function checkIsCfg(){
         if(cfg.password) console.log('Using password from cfg.json')
     }
     catch{}
+}
+
+function saveBackup(list){
+    console.log("Saving backup...")
+    try{
+        var dateObj = new Date();
+        var month = dateObj.getUTCMonth() + 1; //months from 1-12
+        var day = dateObj.getUTCDate();
+        var year = dateObj.getUTCFullYear();                
+        var seconds = dateObj.getSeconds();
+        var minutes = dateObj.getMinutes();
+        var hour = dateObj.getHours();
+        
+        //If < 10 - add "0" before. E.g 10:3 -> 10:03
+        if(month<10) month = "0"+month
+        if(hour<10) hour = "0"+hour
+        if(minutes<10) minutes = "0"+minutes
+        if(seconds<10) seconds = "0"+seconds
+
+        var newDate = `${day}.${month}.${year}_${hour}:${minutes}:${seconds}`
+        list = JSON.stringify(list, null, 2)
+        fs.writeFileSync(`./TidalBackup_${newDate}.txt`, list, 'utf8')
+        console.log(`Success! File saved with name: ./TidalBackup_${newDate}`)
+    }catch(e){
+        console.log(e)
+        return readline.question("\n Press Enter to end...")
+    }
 }
