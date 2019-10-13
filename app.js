@@ -41,7 +41,7 @@ async function backupAllPlaylists(playlists){
         var songsList = [];
         await tidal.getPlaylistTracks(playlist.uuid).then(songs =>{
             songs.forEach(song => {
-                songsList.push(song.title)
+                songsList.push(song.title+" - "+song.artist.name)
             });
             var title = playlist.title
             list.push({[title]: songsList})
@@ -58,7 +58,7 @@ function backupPlaylist(uuid){
         var songsList = [];
         tidal.getPlaylistTracks(uuid).then(songs =>{
             songs.forEach(song => {
-                songsList.push(song.title)
+                songsList.push(song.title+" - "+song.artist.name)
             });
             // console.log(`${playlist.title}: `)
             // console.log(util.inspect(songsList, { maxArrayLength: null })) //Log w/o: ...more items
