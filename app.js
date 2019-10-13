@@ -28,6 +28,8 @@ tidal.login(login, password).then(user =>{
         const uuid = backupFromCfg || readline.question("Coppy UUID of your playlist (without brackets) and paste it here, or if you want to backup all type all: ", {defaultInput: "all"})
         if(uuid == "all") backupAllPlaylists(playlists)
         else (backupPlaylist(uuid))
+    }).catch(e =>{
+        console.log(`Error while loading playlists. \nMore info: ${e}`)
     })
 }).catch(e =>{
     console.log(`\nError. Bad login, password or you have problem with network. \nMore info: ${e}`)
@@ -45,6 +47,8 @@ async function backupAllPlaylists(playlists){
             });
             var title = playlist.title
             list.push({[title]: songsList})
+        }).catch(e =>{
+            console.log(`Error while fetching songs. \nMore info: ${e}`)
         })
     }
     saveBackup(list)
@@ -68,6 +72,8 @@ function backupPlaylist(uuid){
                 [title]: songsList
             }
             saveBackup(list)
+        }).catch(e =>{
+            console.log(`Error while fetching songs. \nMore info: ${e}`)
         })
     }).catch(e => {
         console.log(`\nError while loading playlist \nMore info: ${e}`) 
