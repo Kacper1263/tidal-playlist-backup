@@ -6,4 +6,5 @@
 [x] - Showing artist next to song name eg. "Wonderland - Caravan Palace"
 [x] - Save backup to txt file with date
 [x] - If seconds,min,days etc. are < 10 add "0" to before them
-[ ] - Option to backup favourites
+[x] - Option to backup favourites
+[ ] - After error make log-{date}.txt with error

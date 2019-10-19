@@ -25,8 +25,9 @@ tidal.login(login, password).then(user =>{
                 console.log(` - ${playlist.title}: (${playlist.uuid})`)
             }); 
         }else console.log(`Creating backup of: ${backupFromCfg}\n`) 
-        const uuid = backupFromCfg || readline.question("Coppy UUID of your playlist (without brackets) and paste it here, or if you want to backup all type all: ", {defaultInput: "all"})
+        const uuid = backupFromCfg || readline.question("Coppy UUID of your playlist (without brackets) and paste it here, or if you want to backup all type all, or favorites: ", {defaultInput: "all"})
         if(uuid == "all") backupAllPlaylists(playlists)
+        else if(uuid == "favorites") backupFavorites()
         else (backupPlaylist(uuid))
     }).catch(e =>{
         console.log(`Error while loading playlists. \nMore info: ${e}`)
@@ -36,9 +37,11 @@ tidal.login(login, password).then(user =>{
     readline.question("\n Press Enter to end...")
 })
 
+//Backup all playlists and favorites
 async function backupAllPlaylists(playlists){
-    console.log("\nFetching songs from your playlists...")
     var list = [] //List to backup
+    //Fetch songs from playlists
+    console.log("\nFetching songs from your playlists...")
     for await(var playlist of playlists){
         var songsList = [];
         await tidal.getPlaylistTracks(playlist.uuid).then(songs =>{
@@ -51,6 +54,22 @@ async function backupAllPlaylists(playlists){
             console.log(`Error while fetching songs. \nMore info: ${e}`)
         })
     }
+    //Fetch songs from favorites
+    console.log("Fetching songs from your favorites...")
+    await tidal.getFavoriteTracks().then(favorites =>{
+
+        var songsList = [];
+        favorites.forEach(song => {
+            songsList.push(song.title+" - "+song.artist.name)
+        });
+
+        var title = "Favorites"
+        list.push({[title]: songsList})
+    }).catch(e => {
+        console.log(`\nError while fetching favorites \nMore info: ${e}`) 
+        return readline.question("\n Press Enter to end...")
+    })
+    //Save file with both (favorites & playlists)
     saveBackup(list)
 }
 function backupPlaylist(uuid){
@@ -64,8 +83,6 @@ function backupPlaylist(uuid){
             songs.forEach(song => {
                 songsList.push(song.title+" - "+song.artist.name)
             });
-            // console.log(`${playlist.title}: `)
-            // console.log(util.inspect(songsList, { maxArrayLength: null })) //Log w/o: ...more items
 
             var title = playlist.title
             var list = {
@@ -77,6 +94,25 @@ function backupPlaylist(uuid){
         })
     }).catch(e => {
         console.log(`\nError while loading playlist \nMore info: ${e}`) 
+        return readline.question("\n Press Enter to end...")
+    })
+}
+function backupFavorites(){
+    console.log("\nFetching songs from your favorites...")
+    tidal.getFavoriteTracks().then(favorites =>{
+
+        var songsList = [];
+        favorites.forEach(song => {
+            songsList.push(song.title+" - "+song.artist.name)
+        });
+
+        var title = "Favorites"
+        var list = {
+            [title]: songsList
+        }
+        saveBackup(list)
+    }).catch(e => {
+        console.log(`\nError while fetching favorites \nMore info: ${e}`) 
         return readline.question("\n Press Enter to end...")
     })
 }
