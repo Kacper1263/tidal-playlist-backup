@@ -1,10 +1,10 @@
 [x] - Show list of playlists with names and UUID
 [x] - Get users choice (UUID)
-[x] - When user sellect wrong playlist show error
+[x] - When user select wrong playlist show error
 [x] - Config file that can be used e.g. to use this script w/o input from user
-[x] - FileSystem must hame diferent path in Windows and Linux. (path.join() can help)
+[x] - FileSystem must hame different path in Windows and Linux. (path.join() can help)
 [x] - Showing artist next to song name eg. "Wonderland - Caravan Palace"
 [x] - Save backup to txt file with date
 [x] - If seconds,min,days etc. are < 10 add "0" to before them
-[x] - Option to backup favourites
+[x] - Option to backup favorites
 [ ] - After error make log-{date}.txt with error

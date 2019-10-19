@@ -25,7 +25,7 @@ tidal.login(login, password).then(user =>{
                 console.log(` - ${playlist.title}: (${playlist.uuid})`)
             }); 
         }else console.log(`Creating backup of: ${backupFromCfg}\n`) 
-        const uuid = backupFromCfg || readline.question("Coppy UUID of your playlist (without brackets) and paste it here, or if you want to backup all type all, or favorites: ", {defaultInput: "all"})
+        const uuid = backupFromCfg || readline.question("Copy UUID of your playlist (without brackets) and paste it here, or if you want to backup all type all, or favorites: ", {defaultInput: "all"})
         if(uuid == "all") backupAllPlaylists(playlists)
         else if(uuid == "favorites") backupFavorites()
         else (backupPlaylist(uuid))
