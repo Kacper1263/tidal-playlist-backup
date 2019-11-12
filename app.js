@@ -31,10 +31,11 @@ tidal.login(login, password).then(user =>{
         else (backupPlaylist(uuid))
     }).catch(e =>{
         console.log(`Error while loading playlists. \nMore info: ${e}`)
+        readline.keyInPause("\nProgram ended...")
     })
 }).catch(e =>{
     console.log(`\nError. Bad login, password or you have problem with network. \nMore info: ${e}`)
-    readline.question("\n Press Enter to end...")
+    readline.keyInPause("\nProgram ended...")
 })
 
 //Backup all playlists and favorites
@@ -94,7 +95,7 @@ function backupPlaylist(uuid){
         })
     }).catch(e => {
         console.log(`\nError while loading playlist \nMore info: ${e}`) 
-        return readline.question("\n Press Enter to end...")
+        return readline.keyInPause("\nProgram ended...")
     })
 }
 function backupFavorites(){
@@ -113,7 +114,7 @@ function backupFavorites(){
         saveBackup(list)
     }).catch(e => {
         console.log(`\nError while fetching favorites \nMore info: ${e}`) 
-        return readline.question("\n Press Enter to end...")
+        return readline.keyInPause("\nProgram ended...")
     })
 }
 
@@ -153,9 +154,9 @@ function saveBackup(list){
         var saveIn = path.join(`./TidalBackup_${newDate}.txt`)
         fs.writeFileSync(saveIn, list, 'utf8')
         console.log(`Success! File saved with name: TidalBackup_${newDate}`)
-        if(!loginFromCfg || !passwordFromCfg || !backupFromCfg)return readline.question("\n Press Enter to end...")
+        if(!loginFromCfg || !passwordFromCfg || !backupFromCfg)return readline.keyInPause("\nProgram ended...")
     }catch(e){
         console.log(e)
-        return readline.question("\n Press Enter to end...")
+        return readline.keyInPause("\nProgram ended...")
     }
 }
