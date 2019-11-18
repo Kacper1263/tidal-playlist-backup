@@ -53,6 +53,7 @@ async function backupAllPlaylists(playlists){
             var title = playlist.title
             list.push({[title]: songsList})
         }).catch(e =>{
+            saveLog(`Error while fetching songs. \nMore info: ${e}`)
             console.log(`Error while fetching songs. \nMore info: ${e}`)
         })
     }
@@ -68,6 +69,7 @@ async function backupAllPlaylists(playlists){
         var title = "Favorites"
         list.push({[title]: songsList})
     }).catch(e => {
+        saveLog(`Error while fetching favorites \nMore info: ${e}`)
         console.log(`\nError while fetching favorites \nMore info: ${e}`) 
         return readline.question("\n Press Enter to end...")
     })
@@ -92,9 +94,11 @@ function backupPlaylist(uuid){
             }
             saveBackup(list)
         }).catch(e =>{
+            saveLog(`Error while fetching songs. \nMore info: ${e}`)
             console.log(`Error while fetching songs. \nMore info: ${e}`)
         })
     }).catch(e => {
+        saveLog(`Error while loading playlist \nMore info: ${e}`)
         console.log(`\nError while loading playlist \nMore info: ${e}`) 
         return readline.keyInPause("\nProgram ended...")
     })
@@ -114,6 +118,7 @@ function backupFavorites(){
         }
         saveBackup(list)
     }).catch(e => {
+        saveLog(`Error while fetching favorites \nMore info: ${e}`)
         console.log(`\nError while fetching favorites \nMore info: ${e}`) 
         return readline.keyInPause("\nProgram ended...")
     })
@@ -157,31 +162,37 @@ function saveBackup(list){
         console.log(`Success! File saved with name: TidalBackup_${newDate}`)
         if(!loginFromCfg || !passwordFromCfg || !backupFromCfg)return readline.keyInPause("\nProgram ended...")
     }catch(e){
-        console.log(e)
+        saveLog(`Error while saving file. \nMore info: ${e}`)
+        console.log(`Error while saving file. \nMore info: ${e}`)
         return readline.keyInPause("\nProgram ended...")
     }
 }
 
 function saveLog(_log){
-    //Get time
-    var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1; //months from 1-12
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();                
-    var seconds = dateObj.getSeconds();
-    var minutes = dateObj.getMinutes();
-    var hour = dateObj.getHours();
+    try{
+        //Get time
+        var dateObj = new Date();
+        var month = dateObj.getUTCMonth() + 1; //months from 1-12
+        var day = dateObj.getUTCDate();
+        var year = dateObj.getUTCFullYear();                
+        var seconds = dateObj.getSeconds();
+        var minutes = dateObj.getMinutes();
+        var hour = dateObj.getHours();
+        
+        //If < 10 - add "0" before. E.g 10:3 -> 10:03
+        if(month<10) month = "0"+month
+        if(hour<10) hour = "0"+hour
+        if(minutes<10) minutes = "0"+minutes
+        if(seconds<10) seconds = "0"+seconds
+
+        var newDate = `[${day}.${month}.${year} ${hour}:${minutes}:${seconds}] - `
+
+        //save log
+        _log = newDate + _log + "\r\n\r\n"
+        var saveIn = path.join(`./errorLog.txt`)
+        fs.appendFileSync(saveIn, _log, 'utf8')
+    }catch(e){
+        console.log(`Error while saving error log. \nMore info: ${e}`)
+    }
     
-    //If < 10 - add "0" before. E.g 10:3 -> 10:03
-    if(month<10) month = "0"+month
-    if(hour<10) hour = "0"+hour
-    if(minutes<10) minutes = "0"+minutes
-    if(seconds<10) seconds = "0"+seconds
-
-    var newDate = `[${day}.${month}.${year} ${hour}:${minutes}:${seconds}] - `
-
-    //save log
-    _log = newDate + _log + "\r\n\r\n"
-    var saveIn = path.join(`./errorLog.txt`)
-    fs.appendFileSync(saveIn, _log, 'utf8')
 }
