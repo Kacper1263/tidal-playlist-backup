@@ -7,4 +7,4 @@
 [x] - Save backup to txt file with date
 [x] - If seconds,min,days etc. are < 10 add "0" to before them
 [x] - Option to backup favorites
-[ ] - After error make log-{date}.txt with error
+[x] - After error make log-{date}.txt with error
