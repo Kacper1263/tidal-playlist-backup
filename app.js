@@ -1,3 +1,15 @@
+//#region Check are required packages installed
+try{
+    require('readline-sync')
+    require('util')
+    require('fs')
+    require('path')
+    require('tidal-api-wrapper')
+}catch(e){
+    return console.log(`\n   You don't have required packages! \n\n   Use "npm i" to install them! \n\n`)
+}
+//#endregion
+
 const readline = require('readline-sync')
 const util = require('util')
 const fs = require('fs')
@@ -30,7 +42,8 @@ tidal.login(login, password).then(user =>{
         else if(uuid == "favorites") backupFavorites()
         else (backupPlaylist(uuid))
     }).catch(e =>{
-        console.log(`Error while loading playlists. \nMore info: ${e}`)
+        saveLog(`Error while loading list of playlists. \nMore info: ${e}`)
+        console.log(`Error while loading list of playlists. \nMore info: ${e}`)
         readline.keyInPause("\nProgram ended...")
     })
 }).catch(e =>{
@@ -98,8 +111,8 @@ function backupPlaylist(uuid){
             console.log(`Error while fetching songs. \nMore info: ${e}`)
         })
     }).catch(e => {
-        saveLog(`Error while loading playlist \nMore info: ${e}`)
-        console.log(`\nError while loading playlist \nMore info: ${e}`) 
+        saveLog(`Error while loading playlist \nMore info: ${e} \nAre you sure you entered UUID correctly and you have internet connection?`)
+        console.log(`\nError while loading playlist \nMore info: ${e} \nAre you sure you entered UUID correctly and you have internet connection?`) 
         return readline.keyInPause("\nProgram ended...")
     })
 }
