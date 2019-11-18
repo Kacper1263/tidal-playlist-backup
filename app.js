@@ -34,6 +34,7 @@ tidal.login(login, password).then(user =>{
         readline.keyInPause("\nProgram ended...")
     })
 }).catch(e =>{
+    saveLog(`Error. Bad login, password or you have problem with network. \nMore info: ${e}`)
     console.log(`\nError. Bad login, password or you have problem with network. \nMore info: ${e}`)
     readline.keyInPause("\nProgram ended...")
 })
@@ -159,4 +160,28 @@ function saveBackup(list){
         console.log(e)
         return readline.keyInPause("\nProgram ended...")
     }
+}
+
+function saveLog(_log){
+    //Get time
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();                
+    var seconds = dateObj.getSeconds();
+    var minutes = dateObj.getMinutes();
+    var hour = dateObj.getHours();
+    
+    //If < 10 - add "0" before. E.g 10:3 -> 10:03
+    if(month<10) month = "0"+month
+    if(hour<10) hour = "0"+hour
+    if(minutes<10) minutes = "0"+minutes
+    if(seconds<10) seconds = "0"+seconds
+
+    var newDate = `[${day}.${month}.${year} ${hour}:${minutes}:${seconds}] - `
+
+    //save log
+    _log = newDate + _log + "\r\n\r\n"
+    var saveIn = path.join(`./errorLog.txt`)
+    fs.appendFileSync(saveIn, _log, 'utf8')
 }
