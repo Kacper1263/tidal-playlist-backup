@@ -8,3 +8,4 @@
 [x] - If seconds,min,days etc. are < 10 add "0" to before them
 [x] - Option to backup favorites
 [x] - After error make log-{date}.txt with error
+[ ] - Change data format from dd.mm.yyyy to yyyy.mm.dd 
