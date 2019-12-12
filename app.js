@@ -28,6 +28,7 @@ var password = passwordFromCfg || readline.question("Tidal password: ", {hideEch
 
 console.log(`\nLogging in...`)
 
+// Main function
 tidal.login(login, password).then(user =>{
     console.log(`Loading your playlists...`)
     tidal.getPlaylists().then(playlists =>{
