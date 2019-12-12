@@ -111,7 +111,7 @@ function backupPlaylist(uuid){
             console.log(`Error while fetching songs. \nMore info: ${e}`)
         })
     }).catch(e => {
-        saveLog(`Error while loading playlist \nMore info: ${e} \nAre you sure you entered UUID correctly and you have internet connection?`)
+        saveLog(`Error while loading playlist \nMore info: ${e} \nAre you sure you entered UUID correctly and you have internet connection?\nCan't find playlist: ${uuid}`)
         console.log(`\nError while loading playlist \nMore info: ${e} \nAre you sure you entered UUID correctly and you have internet connection?`) 
         return readline.keyInPause("\nProgram ended...")
     })
@@ -168,7 +168,8 @@ function saveBackup(list){
         if(minutes<10) minutes = "0"+minutes
         if(seconds<10) seconds = "0"+seconds
 
-        var newDate = `${day}.${month}.${year}_${hour};${minutes};${seconds}`
+        var newDate = `${year}.${month}.${day}_${hour};${minutes};${seconds}`
+
         list = JSON.stringify(list, null, 2)
         var saveIn = path.join(`./TidalBackup_${newDate}.txt`)
         fs.writeFileSync(saveIn, list, 'utf8')
@@ -198,7 +199,7 @@ function saveLog(_log){
         if(minutes<10) minutes = "0"+minutes
         if(seconds<10) seconds = "0"+seconds
 
-        var newDate = `[${day}.${month}.${year} ${hour}:${minutes}:${seconds}] - `
+        var newDate = `[${year}.${month}.${day} ${hour}:${minutes}:${seconds}] - `
 
         //save log
         _log = newDate + _log + "\r\n\r\n"
@@ -206,6 +207,5 @@ function saveLog(_log){
         fs.appendFileSync(saveIn, _log, 'utf8')
     }catch(e){
         console.log(`Error while saving error log. \nMore info: ${e}`)
-    }
-    
+    }    
 }
