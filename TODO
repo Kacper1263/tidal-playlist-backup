@@ -9,3 +9,4 @@
 [x] - Option to backup favorites
 [x] - After error make log-{date}.txt with error
 [x] - Change data format from dd.mm.yyyy to yyyy.mm.dd 
+[ ] - Add user login to file name
