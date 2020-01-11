@@ -171,8 +171,9 @@ function saveBackup(list){
 
         var newDate = `${year}.${month}.${day}_${hour};${minutes};${seconds}`
 
+        list.unshift({"accountLogin": login, "createdAt": newDate}) // add this on top of the file
         list = JSON.stringify(list, null, 2)
-        var saveIn = path.join(`./TidalBackup_${newDate}.txt`)
+        var saveIn = path.join(`./TidalBackup_${newDate}__${login}.txt`)
         fs.writeFileSync(saveIn, list, 'utf8')
         console.log(`Success! File saved with name: TidalBackup_${newDate}`)
         if(!loginFromCfg || !passwordFromCfg || !backupFromCfg)return readline.keyInPause("\nProgram ended...")
