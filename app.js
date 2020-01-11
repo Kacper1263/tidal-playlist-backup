@@ -175,7 +175,7 @@ function saveBackup(list){
         list = JSON.stringify(list, null, 2)
         var saveIn = path.join(`./TidalBackup_${newDate}__${login}.txt`)
         fs.writeFileSync(saveIn, list, 'utf8')
-        console.log(`Success! File saved with name: TidalBackup_${newDate}`)
+        console.log(`Success! File saved with name: TidalBackup_${newDate}__${login}`)
         if(!loginFromCfg || !passwordFromCfg || !backupFromCfg)return readline.keyInPause("\nProgram ended...")
     }catch(e){
         saveLog(`Error while saving file. \nMore info: ${e}`)
