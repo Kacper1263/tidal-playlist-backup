@@ -1,0 +1,1 @@
+At this moment when you try to run this script it will only works from EXE file because webToken in tidal-api-wrapper is broken. If ypu want to run this script with node first replace original token with this (kgsOOmYk3zShYrNP) or wait for tidal-api-wrapper update 
